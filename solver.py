@@ -16,6 +16,8 @@ class population:
             input_loc: location of input file.
             size_of_population: number of individuals we would like to evolve in this population.
             num_generations: The number of generations that we would like to run our evolution on.
+        Changes:
+            population.ouputloc, where this population will dump its best individual for grading.
         """
         self.tasks = read_input_file(input_loc)
         population.outputloc = input_loc.split(".")[0] + "_solution.out"
