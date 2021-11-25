@@ -6,8 +6,17 @@ from Task import *
 
 
 class population:
+    """
+    Population of individuals. Contains methods for crossover, and running a population.
+    """
     outputloc = None
     def __init__(self, input_loc, size_of_population, num_generations):
+        """
+        Args:
+            input_loc: location of input file.
+            size_of_population: number of individuals we would like to evolve in this population.
+            num_generations: The number of generations that we would like to run our evolution on.
+        """
         self.tasks = read_input_file(input_loc)
         population.outputloc = input_loc.split(".")[0] + "_solution.out"
         self.list_of_individuals = self.get_individuals(size_of_population)
@@ -15,6 +24,14 @@ class population:
         self.best_individual = None
 
     def get_individuals(self, number_of_individuals):
+        """
+        Creates a list of random individuals to start our population.
+        Args:
+            number_of_individuals: number of individuals that will be in this population.
+
+        Returns:
+            A list of individuals, with randomized tasks in their chromosome.
+        """
         return [individual(random.sample(self.tasks, random.randint(0, len(self.tasks)))) for _ in
                 range(number_of_individuals)]
 
@@ -25,6 +42,18 @@ class population:
         return population_fitness_list[individual]
 
     def get_suitable_parents(self):
+        """
+        Takes the individual list for this population, then gets three potential pairings of individuals for mating.
+        We mate the best individual that we have found so far with one from the 25% range in our population, 50% range in our population,
+        and 75% in our population.
+        Returns:
+            Nested List, with following structure:
+                [
+                    [best_individual, individual from 25%],
+                    [best_individual, individual from 50%],
+                    [best_individual, individual from 75%]
+                ]
+        """
         best_fitness = {}
         for individual in self.list_of_individuals:
             best_fitness[individual.fitness] = individual
@@ -36,6 +65,11 @@ class population:
         return [[best_individual_one, individual_from_bottom], [best_individual_one, individual_from_middle], [best_individual_one, individual_from_top]]
 
     def return_best_individual(self):
+        """
+        Gets the best individual in our current population.
+        Returns:
+            Individual -- with highest fitness.
+        """
         best_fitness = {}
         for individual in self.list_of_individuals:
             best_fitness[individual.fitness] = individual
@@ -44,6 +78,16 @@ class population:
         return best_individual
 
     def crossover(self, individualone, individualtwo):
+        """
+        Crossover the chromosomes for our two parents.
+        Args:
+            individualone: usually the best individual in population.
+            individualtwo: Another individual, selected from population.
+
+        Returns:
+            An individual --> built from the chromosome of each parent.
+            Also adds individual to the current population.
+        """
         # Set the crossover point to a uniform random variable in range 1 to the minimum of individual one's chromosome length and individual two's chromosome length
         crossover_point = random.randint(2, min(len(individualone.chromosome), len(individualtwo.chromosome)))
         # Split each chromosome around the crossover point
@@ -55,10 +99,18 @@ class population:
         return individual(child_gamete)
 
     def run_population(self):
+        """
+        Runs this population for self.num_generations, crossing over parents using self.crossover.
+        Returns: The best individual of this population.
+
+        """
         for _ in range(self.num_generations):
+            #Get suitable parents
             parentslist = self.get_suitable_parents()
+            #Get the current best
             current_best = self.return_best_individual()
             for pairing in parentslist:
+                #do -> crossover the parents genome.
                 parentone = pairing[0]
                 parenttwo = pairing[1]
                 child = self.crossover(parentone, parenttwo)
@@ -99,12 +151,26 @@ class population:
 
 
 class individual:
+    """
+    An individual, with a potential task list as its chromosome.
+    """
     def __init__(self, my_list_of_tasks):
+        """
+        Sets the chromosome of this individual to be a list of tasks, either from crossover (above)
+        or random input.
+        Args:
+            my_list_of_tasks: A list of Task objects, in order.
+        """
         self.chromosome = my_list_of_tasks
         self.fitness = None
         self.get_fitness()
 
     def get_fitness(self):
+        """
+        Evaluates the total profit gained from the ordering of tasks outlined in self.chromosome
+        Returns:
+            The fitness of this chromosome (float).
+        """
         total_reward = 0
         time = 0
         for task in self.chromosome:
@@ -122,12 +188,23 @@ class individual:
         return total_reward
 
     def dump_results(self):
+        """
+        Writes list of tasks to output location described in the population.
+        Returns:
+            Nothing, but writes file to outputloc described in population.
+
+        """
         output_list = []
         for i in range(len(self.chromosome)):
             output_list.append(self.chromosome[i].get_task_id())
         write_output_file(population.outputloc, output_list)
 
     def __str__(self):
+        """
+        String representation of individual, for debugging and pretty printing.
+        Returns: str, with the profit gained by this ordering of tasks, and the length of the chromosome (how many tasks we have completed).
+
+        """
         return "Individual with profit {}, using {} tasks.".format(self.fitness, len(self.chromosome))
 
 
@@ -158,6 +235,16 @@ def write_multiple_inputs(length_of_input):
 >>>>>>> 7dcc980 (Added back the staff solution of 100.in)
 
 def convert_output_to_list_of_tasks(ordering: list, tasklist: list):
+    """
+    Takes output file and generates task list. For use in comparing to staff solution.
+    Args:
+        ordering: read from output file.
+        tasklist: tasklist from corresponding input file.
+
+    Returns:
+        List of Task objects, in order of their completion in the staff output file.
+
+    """
     outputlist = []
     for task_id in ordering:
         for task in tasklist:
