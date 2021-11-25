@@ -45,7 +45,7 @@ class population:
         """
         Takes the individual list for this population, then gets three potential pairings of individuals for mating.
         We mate the best individual that we have found so far with one from the 25% range in our population, 50% range in our population,
-        and 75% in our population.
+        and 75% in our population. TODO: MASSIVE IMPROVEMENTS CAN BE MADE HERE, THIS IS WHERE RESEARCH PAPERS COME IN
         Returns:
             Nested List, with following structure:
                 [
@@ -128,9 +128,13 @@ class population:
         And vice versa if individual two's solution is better.
         Args:
             gamete_one:
+                slice of individualone's chromosome around crossover point.
             gamete_two:
+                slice of individualtwo's chromosome around crossofer point.
             individualone:
+                individualone -- an individual from our population.
             individualtwo:
+                individualtwo -- an individual from our population.
 
         Returns:
             merged chromosome of the parents.
