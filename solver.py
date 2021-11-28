@@ -309,5 +309,7 @@ if __name__ == '__main__':
     for input_path in list_of_files:
         print("running algorithm on {}".format(input_path))
         output_path = 'outputs/' + input_path.split("/")[1]  + "/" + input_path.split("/")[2].split(".")[0] + ".out"
+        with open(output_path, "w") as f:
+            f.write("")
         result = solve(input_path)
         result.dump_results(output_path)
