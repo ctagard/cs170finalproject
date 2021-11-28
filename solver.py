@@ -307,6 +307,7 @@ def get_list_of_files(dirName):
 if __name__ == '__main__':
     list_of_files = get_list_of_files("inputs/")
     for input_path in list_of_files:
+        print("running algorithm on {}".format(input_path))
         output_path = 'outputs/' + input_path.split("/")[1]  + "/" + input_path.split("/")[2].split(".")[0] + ".out"
         result = solve(input_path)
         result.dump_results(output_path)
