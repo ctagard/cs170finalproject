@@ -173,11 +173,13 @@ class population:
 
         """
         for i in range(self.num_generations):
+            """
             print("New Generation! Generation {} with {} individuals, where the best is {}".format(i,
                                                                                                    len(self.list_of_individuals),
                                                                                                    self.best_individual
                                                                                                    )
                   )
+            """
             # Get suitable parents
             parentslist = self.get_suitable_parents()
             # Get the current best
@@ -188,10 +190,14 @@ class population:
                 parenttwo = pairing[1]
                 child = self.crossover(parentone, parenttwo)
                 if child.fitness > current_best.fitness:
+                    """
                     print("New Best solution found! Best profit(fitness) is {}".format(child.fitness))
+                    """
             self.kill_off_useless_individuals()
             if i % 200 == 0:
+                """
                 print("+++++++++++++++++++++++++++++++\nExtinction Event!!!\n++++++++++++++++++++++++++++++++++++")
+                """
                 self.dinosaur_event()
             self.best_individual = self.return_best_individual()
         return self.return_best_individual()
@@ -404,7 +410,6 @@ def get_list_of_files(dirName):
     return allFiles
 
 def solvefrominput_path(input_path):
-    print("running algorithm on {}".format(input_path))
     # Get output location from input location.
     output_path = 'outputs/' + input_path.split("/")[1] + "/" + input_path.split("/")[2].split(".")[0] + ".out"
     if not os.path.exists(output_path):
