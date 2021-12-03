@@ -4,6 +4,7 @@ import random
 import collections
 from Task import *
 import operator
+from joblib import Parallel, delayed
 
 
 class population:
@@ -402,15 +403,18 @@ def get_list_of_files(dirName):
                 allFiles.append(fullPath)
     return allFiles
 
+def solvefrominput_path(input_path):
+    print("running algorithm on {}".format(input_path))
+    # Get output location from input location.
+    output_path = 'outputs/' + input_path.split("/")[1] + "/" + input_path.split("/")[2].split(".")[0] + ".out"
+    if not os.path.exists(output_path):
+        with open(output_path, "w+") as f:
+            pass
+    result = solve(input_path)
+    result.dump_results(output_path)
+
 
 if __name__ == '__main__':
     list_of_files = get_list_of_files("inputs/")
-    for input_path in list_of_files:
-        print("running algorithm on {}".format(input_path))
-        #Get output location from input location.
-        output_path = 'outputs/' + input_path.split("/")[1] + "/" + input_path.split("/")[2].split(".")[0] + ".out"
-        if not os.path.exists(output_path):
-            with open(output_path, "w+") as f:
-                pass
-        result = solve(input_path)
-        result.dump_results(output_path)
+    #Parallelize this PLEASE
+    Parallel(n_jobs=4)(delayed(solvefrominput_path)(list_of_files[i]) for i in range(len(list_of_files)))
