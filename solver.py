@@ -424,4 +424,4 @@ if __name__ == '__main__':
     list_of_files = get_list_of_files("inputs/")
 
     #Parallelize this PLEASE
-    Parallel(n_jobs=4)(delayed(solvefrominput_path)(list_of_files[i]) for i in range(len(list_of_files)))
+    Parallel(n_jobs=8)(delayed(solvefrominput_path)(list_of_files[i]) for i in range(len(list_of_files)))
