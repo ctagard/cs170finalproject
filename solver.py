@@ -97,10 +97,10 @@ class population:
         parentslist.append([best_individual_one, individual_from_top])
         # Generate our general parent list, with a third of individuals mating randomly.
         for _ in range(int(len(self.list_of_individuals) / 3)):
-            other_individual = random.sample(set(self.list_of_individuals), 1)
+            other_individual = random.sample(list(set(self.list_of_individuals)), 1)
 
             pairing = [best_individual_one] + other_individual
-            parentslist.append(random.sample(set(self.list_of_individuals), 2))
+            parentslist.append(random.sample(list(set(self.list_of_individuals)), 2))
             parentslist.append(pairing)
 
         return parentslist
@@ -410,6 +410,7 @@ def get_list_of_files(dirName):
     return allFiles
 
 def solvefrominput_path(input_path):
+    print(input_path)
     # Get output location from input location.
     output_path = 'outputs/' + input_path.split("/")[1] + "/" + input_path.split("/")[2].split(".")[0] + ".out"
     if not os.path.exists(output_path):
@@ -421,5 +422,6 @@ def solvefrominput_path(input_path):
 
 if __name__ == '__main__':
     list_of_files = get_list_of_files("inputs/")
+
     #Parallelize this PLEASE
     Parallel(n_jobs=4)(delayed(solvefrominput_path)(list_of_files[i]) for i in range(len(list_of_files)))
