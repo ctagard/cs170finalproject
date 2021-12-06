@@ -35,6 +35,7 @@ class population:
             soln = convert_output_to_list_of_tasks(output, self.tasks)
             self.list_of_individuals.append(individual(soln))
         except:
+            #Adding comment for git
             print("outputs/{}/{}".format(input_loc.split("-")[0].split("/")[1], input_loc.split("/")[2].split(".")[0] + ".out"))
 
 
