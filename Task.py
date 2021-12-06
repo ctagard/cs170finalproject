@@ -95,4 +95,12 @@ class Task:
         """
         return "Task {} has deadline {}, duration {}, and max benefit {}".format(self.get_task_id(), self.get_deadline(), self.get_duration(), self.get_max_benefit())
 
+    def __hash__(self):
+        return hash(self.task_id)
+
+    def __eq__(self, other):
+        return self.task_id == other.task_id
+
+    def __lt__(self, other):
+        return self.deadline <= other.deadline
     # Feel free to add more helper functions here
