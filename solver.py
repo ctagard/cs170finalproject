@@ -223,6 +223,7 @@ def solve(input_file_location):
     """
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     return [1]
     pass
 =======
@@ -230,6 +231,9 @@ def solve(input_file_location):
 =======
     trialpopulation = population(input_file_location, 10000, 5000)
 >>>>>>> 29e97f3 (Adding all the code, input files, and stuff)
+=======
+    trialpopulation = population(input_file_location, 10000, 20000)
+>>>>>>> eb8d8d4 (modified solve config for google cloudvm)
     best_individual = trialpopulation.run_population()
     return best_individual
 
