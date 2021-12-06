@@ -190,9 +190,7 @@ class population:
                 parenttwo = pairing[1]
                 child = self.crossover(parentone, parenttwo)
                 if child.fitness > current_best.fitness:
-                    """
                     print("New Best solution found! Best profit(fitness) is {}".format(child.fitness))
-                    """
             self.kill_off_useless_individuals()
             if i % 200 == 0:
                 """
@@ -261,10 +259,12 @@ class individual:
         total_reward = 0
         time = 0
         for task in self.chromosome:
+            # Time to complete the task
+            time += task.duration
             if time >= 1440:
                 break
             # Time to complete the task
-            time += task.duration
+
             # Check if task is late
             if task.deadline <= time:
                 total_reward += task.get_late_benefit(time - task.deadline)
@@ -424,4 +424,4 @@ if __name__ == '__main__':
     list_of_files = get_list_of_files("inputs/")
 
     #Parallelize this PLEASE
-    Parallel(n_jobs=8)(delayed(solvefrominput_path)(list_of_files[i]) for i in range(len(list_of_files)))
+    Parallel(n_jobs=1)(delayed(solvefrominput_path)(list_of_files[i]) for i in range(len(list_of_files)))
