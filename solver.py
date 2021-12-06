@@ -5,6 +5,7 @@ import collections
 from Task import *
 import operator
 from joblib import Parallel, delayed
+from tqdm import tqdm
 
 
 class population:
@@ -194,7 +195,9 @@ class population:
                 parenttwo = pairing[1]
                 child = self.crossover(parentone, parenttwo)
                 if child.fitness > current_best.fitness:
+                    """
                     print("New Best solution found! Best profit(fitness) is {}".format(child.fitness))
+                    """
             self.kill_off_useless_individuals()
             if i % 200 == 0:
                 """
@@ -422,7 +425,6 @@ def get_list_of_files(dirName):
     return allFiles
 
 def solvefrominput_path(input_path):
-    print(input_path)
     # Get output location from input location.
     output_path = 'outputs/' + input_path.split("/")[1] + "/" + input_path.split("/")[2].split(".")[0] + ".out"
     if not os.path.exists(output_path):
@@ -436,5 +438,5 @@ if __name__ == '__main__':
     list_of_files = get_list_of_files("inputs/")
 
     #Parallelize this PLEASE
-    Parallel(n_jobs=60)(delayed(solvefrominput_path)(list_of_files[i]) for i in range(len(list_of_files)))
+    Parallel(n_jobs=16)(delayed(solvefrominput_path)(list_of_files[i]) for i in tqdm(range(len(list_of_files))))
 
