@@ -30,9 +30,14 @@ class population:
         self.list_of_individuals.append(individual(sorted(self.tasks)))
         self.num_generations = num_generations
         #Ran on cloud compute with small error, now we are updating using the cloud results.
-        output = read_output_file("outputs/{}/{}".format(input_loc.split("-")[0].split("/")[1], input_loc.split("/")[2].split(".")[0] + ".out"))
-        soln = convert_output_to_list_of_tasks(output, self.tasks)
-        self.list_of_individuals.append(individual(soln))
+        try:
+            output = read_output_file("outputs/{}/{}".format(input_loc.split("-")[0].split("/")[1], input_loc.split("/")[2].split(".")[0] + ".out"))
+            soln = convert_output_to_list_of_tasks(output, self.tasks)
+            self.list_of_individuals.append(individual(soln))
+        except:
+            print("outputs/{}/{}".format(input_loc.split("-")[0].split("/")[1], input_loc.split("/")[2].split(".")[0] + ".out"))
+
+
         self.best_individual = None
 
     def get_individuals(self, number_of_individuals):
