@@ -178,13 +178,13 @@ class population:
 
         """
         for i in range(self.num_generations):
-            """
+
             print("New Generation! Generation {} with {} individuals, where the best is {}".format(i,
                                                                                                    len(self.list_of_individuals),
                                                                                                    self.best_individual
                                                                                                    )
                   )
-            """
+
             # Get suitable parents
             parentslist = self.get_suitable_parents()
             # Get the current best
@@ -323,7 +323,7 @@ def solve(input_file_location):
     """
 
 
-    trialpopulation = population(input_file_location,5000, 5000)
+    trialpopulation = population(input_file_location, 300, 100)
     best_individual = trialpopulation.run_population()
     return best_individual
 
@@ -436,7 +436,17 @@ def solvefrominput_path(input_path):
 
 if __name__ == '__main__':
     list_of_files = get_list_of_files("inputs/")
-
+    """
+    for file in list_of_files:
+        output_loc = "outputs/{}/{}".format(file.split("-")[0].split("/")[1],
+                                                         file.split("/")[2].split(".")[0] + ".out")
+        output = read_output_file("outputs/{}/{}".format(file.split("-")[0].split("/")[1],
+                                                         file.split("/")[2].split(".")[0] + ".out"))
+        tasks = read_input_file(file)
+        soln = convert_output_to_list_of_tasks(output, tasks)
+        individualtest = individual(soln)
+        individualtest.dump_results(output_loc)
+    """
     #Parallelize this PLEASE
-    Parallel(n_jobs=16)(delayed(solvefrominput_path)(list_of_files[i]) for i in tqdm(range(len(list_of_files))))
+    Parallel(n_jobs=1)(delayed(solvefrominput_path)(list_of_files[i]) for i in tqdm(range(len(list_of_files))))
 
