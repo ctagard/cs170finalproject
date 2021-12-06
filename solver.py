@@ -193,7 +193,7 @@ class individual:
         self.fitness = total_reward
         return total_reward
 
-    def dump_results(self):
+    def dump_results(self, outputloc):
         """
         Writes list of tasks to output location described in the population.
         Returns:
@@ -203,7 +203,7 @@ class individual:
         output_list = []
         for i in range(len(self.chromosome)):
             output_list.append(self.chromosome[i].get_task_id())
-        write_output_file(population.outputloc, output_list)
+        write_output_file(outputloc, output_list)
 
     def __str__(self):
         """
@@ -223,23 +223,9 @@ def solve(input_file_location):
     Returns:
         output: list of igloos in order of polishing  
     """
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    return [1]
-    pass
-=======
-    trialpopulation = population(tasks, 1000, 15000)
-=======
-    trialpopulation = population(input_file_location, 10000, 5000)
->>>>>>> 29e97f3 (Adding all the code, input files, and stuff)
-=======
-=======
 
->>>>>>> da7e7e3 ("merging starter code with our solution")
-    trialpopulation = population(input_file_location, 10000, 20000)
->>>>>>> eb8d8d4 (modified solve config for google cloudvm)
+
+    trialpopulation = population(input_file_location, 10000, 5000)
     best_individual = trialpopulation.run_population()
     return best_individual
 
@@ -248,7 +234,7 @@ def write_multiple_inputs(length_of_input):
     tasklist = [Task(i + 1, int(random.randint(1, 1440)), random.randint(1, 60), round(random.uniform(10.0, 100.0), 3))
                 for i in range(length_of_input)]
     write_input_file("./samples/" + str(length_of_input) + ".in", tasklist)
->>>>>>> 7dcc980 (Added back the staff solution of 100.in)
+
 
 def convert_output_to_list_of_tasks(ordering: list, tasklist: list):
     """
@@ -288,7 +274,20 @@ def convert_output_to_list_of_tasks(ordering: list, tasklist: list):
 #         output_path = 'outputs/' + input_path[:-3] + '.out'
 #         tasks = read_input_file(input_path)
 #         output = solve(tasks)
+#         write_output_file(output_path, output)
+"""
+tasks = read_input_file("samples/100.in")
+stafftasks = read_output_file("samples/100.out")
 
+benchmark = individual(convert_output_to_list_of_tasks(stafftasks, tasks))
+print("Staff solution has {}".format(benchmark))
+
+result = solve("samples/100.in")
+result.dump_results()
+print(result)
+if benchmark.fitness <= result.fitness:
+    print("We just beat the staff solution, by a margin of ${}".format(result.fitness - benchmark.fitness))
+"""
 def get_list_of_files(dirName):
     listOfFile = os.listdir(dirName)
     allFiles = list()
