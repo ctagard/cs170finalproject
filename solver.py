@@ -178,12 +178,13 @@ class population:
 
         """
         for i in range(self.num_generations):
-
+            """
             print("New Generation! Generation {} with {} individuals, where the best is {}".format(i,
                                                                                                    len(self.list_of_individuals),
                                                                                                    self.best_individual
                                                                                                    )
                   )
+            """
 
             # Get suitable parents
             parentslist = self.get_suitable_parents()
@@ -323,7 +324,7 @@ def solve(input_file_location):
     """
 
 
-    trialpopulation = population(input_file_location, 300, 100)
+    trialpopulation = population(input_file_location, 1000, 100)
     best_individual = trialpopulation.run_population()
     return best_individual
 
@@ -448,5 +449,5 @@ if __name__ == '__main__':
         individualtest.dump_results(output_loc)
     """
     #Parallelize this PLEASE
-    Parallel(n_jobs=1)(delayed(solvefrominput_path)(list_of_files[i]) for i in tqdm(range(len(list_of_files))))
+    Parallel(n_jobs=16)(delayed(solvefrominput_path)(list_of_files[i]) for i in tqdm(range(len(list_of_files))))
 
