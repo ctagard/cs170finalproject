@@ -28,6 +28,10 @@ class population:
         self.list_of_individuals.append(individual(sorted(self.tasks, key=operator.attrgetter("perfect_benefit"))))
         self.list_of_individuals.append(individual(sorted(self.tasks)))
         self.num_generations = num_generations
+        #Ran on cloud compute with small error, now we are updating using the cloud results.
+        output = read_output_file("outputs/{}/{}".format(input_loc.split("-")[0].split("/")[1], input_loc.split("/")[2].split(".")[0] + ".out"))
+        soln = convert_output_to_list_of_tasks(output, self.tasks)
+        self.list_of_individuals.append(individual(soln))
         self.best_individual = None
 
     def get_individuals(self, number_of_individuals):
@@ -258,13 +262,14 @@ class individual:
         """
         total_reward = 0
         time = 0
+        i = 0
         for task in self.chromosome:
             # Time to complete the task
             time += task.duration
             if time >= 1440:
-                break
+                self.chromosome = self.chromosome[:i]
             # Time to complete the task
-
+            i = i + 1
             # Check if task is late
             if task.deadline <= time:
                 total_reward += task.get_late_benefit(time - task.deadline)
@@ -315,7 +320,7 @@ def solve(input_file_location):
     """
 
 
-    trialpopulation = population(input_file_location, 10000, 5000)
+    trialpopulation = population(input_file_location,5000, 5000)
     best_individual = trialpopulation.run_population()
     return best_individual
 
@@ -360,7 +365,14 @@ def convert_output_to_list_of_tasks(ordering: list, tasklist: list):
     return outputlist
 
 
-
+def check_output_file(filename):
+    tasklist = read_input_file("inputs/" + filename.split("-")[0] + "/" + filename.split(".")[0] + ".in")
+    output = read_output_file("outputs/" + filename.split("-")[0] + "/" + filename.split(".")[0] + ".out")
+    soln = convert_output_to_list_of_tasks(output, tasklist)
+    totaltime = 0
+    for task in soln:
+        totaltime += task.duration
+    print(totaltime)
 # Here's an example of how to run your solver.
 # if __name__ == '__main__':
 #     for size in os.listdir('inputs/'):
@@ -424,4 +436,5 @@ if __name__ == '__main__':
     list_of_files = get_list_of_files("inputs/")
 
     #Parallelize this PLEASE
-    Parallel(n_jobs=1)(delayed(solvefrominput_path)(list_of_files[i]) for i in range(len(list_of_files)))
+    Parallel(n_jobs=60)(delayed(solvefrominput_path)(list_of_files[i]) for i in range(len(list_of_files)))
+
