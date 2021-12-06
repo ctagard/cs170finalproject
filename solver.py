@@ -214,13 +214,16 @@ class individual:
         return "Individual with profit {}, using {} tasks.".format(self.fitness, len(self.chromosome))
 
 
+
 def solve(input_file_location):
+
     """
     Args:
         tasks: list[Task], list of igloos to polish
     Returns:
         output: list of igloos in order of polishing  
     """
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -232,6 +235,9 @@ def solve(input_file_location):
     trialpopulation = population(input_file_location, 10000, 5000)
 >>>>>>> 29e97f3 (Adding all the code, input files, and stuff)
 =======
+=======
+
+>>>>>>> da7e7e3 ("merging starter code with our solution")
     trialpopulation = population(input_file_location, 10000, 20000)
 >>>>>>> eb8d8d4 (modified solve config for google cloudvm)
     best_individual = trialpopulation.run_population()
@@ -263,9 +269,9 @@ def convert_output_to_list_of_tasks(ordering: list, tasklist: list):
     return outputlist
 
 
+
 # Here's an example of how to run your solver.
 # if __name__ == '__main__':
-<<<<<<< HEAD
 #     for size in os.listdir('inputs/'):
 #         if size not in ['small', 'medium', 'large']:
 #             continue
@@ -278,23 +284,30 @@ def convert_output_to_list_of_tasks(ordering: list, tasklist: list):
 #             tasks = read_input_file(input_path)
 #             output = solve(tasks)
 #             write_output_file(output_path, output)
-=======
 #     for input_path in os.listdir('inputs/'):
 #         output_path = 'outputs/' + input_path[:-3] + '.out'
 #         tasks = read_input_file(input_path)
 #         output = solve(tasks)
-#         write_output_file(output_path, output)
-tasks = read_input_file("samples/100.in")
-stafftasks = read_output_file("samples/100.out")
 
-benchmark = individual(convert_output_to_list_of_tasks(stafftasks, tasks))
-print("Staff solution has {}".format(benchmark))
+def get_list_of_files(dirName):
+    listOfFile = os.listdir(dirName)
+    allFiles = list()
+    # Iterate over all the entries
+    for entry in listOfFile:
+        # Create full path
+        fullPath = os.path.join(dirName, entry)
+        # If entry is a directory then get the list of files in this directory
+        if os.path.isdir(fullPath):
+            allFiles = allFiles + get_list_of_files(fullPath)
+        else:
+            if ".in" in entry:
+                allFiles.append(fullPath)
+    return allFiles
 
-result = solve("samples/100.in")
-result.dump_results()
-print(result)
-if benchmark.fitness <= result.fitness:
-    print("We just beat the staff solution, by a margin of ${}".format(result.fitness - benchmark.fitness))
 
-
->>>>>>> 7dcc980 (Added back the staff solution of 100.in)
+if __name__ == '__main__':
+    list_of_files = get_list_of_files("inputs/")
+    for input_path in list_of_files:
+        output_path = 'outputs/' + input_path.split("/")[1]  + "/" + input_path.split("/")[2].split(".")[0] + ".out"
+        result = solve(input_path)
+        result.dump_results(output_path)
