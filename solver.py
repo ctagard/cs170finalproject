@@ -443,7 +443,6 @@ def solvefrominput_path(input_path):
 
 if __name__ == '__main__':
     list_of_files = get_list_of_files("inputs/")
-    """
     for file in list_of_files:
         output_loc = "outputs/{}/{}".format(file.split("-")[0].split("/")[1],
                                                          file.split("/")[2].split(".")[0] + ".out")
@@ -452,8 +451,8 @@ if __name__ == '__main__':
         tasks = read_input_file(file)
         soln = convert_output_to_list_of_tasks(output, tasks)
         individualtest = individual(soln)
-        individualtest.dump_results(output_loc)
-    """
+        print(file, individualtest.fitness)
     #Parallelize this PLEASE
+    """
     Parallel(n_jobs=16)(delayed(solvefrominput_path)(list_of_files[i]) for i in tqdm(range(len(list_of_files))))
-
+    """
