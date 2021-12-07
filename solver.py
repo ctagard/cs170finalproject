@@ -330,7 +330,7 @@ def solve(input_file_location):
     """
 
 
-    trialpopulation = population(input_file_location, 1000, 100)
+    trialpopulation = population(input_file_location, 4000, 400)
     best_individual = trialpopulation.run_population()
     return best_individual
 
